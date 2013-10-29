@@ -155,7 +155,6 @@ class InvitationKey(models.Model):
                     'expiration_date': exp_date,
                     'recipient': self.recipient,
                     'token': self.generate_token(invitation_url),
-                    'token': "",
                     'invitation_url':invitation_url}
         return context
     
