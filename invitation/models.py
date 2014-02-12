@@ -39,7 +39,8 @@ try:
         site = None
         root_url = 'http://localhost'
 except:
-    pass
+    site = None
+    root_url = 'http://localhost'
     
 class InvitationKeyManager(models.Manager):
     def get_key(self, invitation_key):
