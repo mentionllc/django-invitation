@@ -100,9 +100,9 @@ class InvitationKey(models.Model):
     key = models.CharField(_('invitation key'), max_length=40)
     date_invited = models.DateTimeField(_('date invited'), 
                                         auto_now_add=True)
-    from_user = models.ForeignKey(User, 
+    from_user = models.ForeignKey(settings.AUTH_USER_MODEL, 
                                   related_name='invitations_sent')
-    registrant = models.ManyToManyField(User, null=True, blank=True, 
+    registrant = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, 
                                   related_name='invitations_used')
     uses_left = models.IntegerField(default=1)
     
@@ -223,7 +223,7 @@ class InvitationKey(models.Model):
         return token_html
         
 class InvitationUser(models.Model):
-    inviter = models.ForeignKey(User, unique=True)
+    inviter = models.ForeignKey(settings.AUTH_USER_MODEL, unique=True)
     invitations_remaining = models.IntegerField()
 
     def __unicode__(self):
