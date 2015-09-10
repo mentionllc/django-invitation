@@ -24,6 +24,13 @@ from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from urlparse import urlparse, urlunparse
 
+try:
+    from django.core.exceptions import AppRegistryNotReady
+    from settings import AUTH_USER_MODEL as user_model_reference  
+except ImportError:  # No app registry ready functionality (probably Django < 1.7), import the actual model as it had been done previously
+    from django.contrib.auth.models import User as user_model_reference
+except AppRegistryNotReady:  # Django 1.7+, the app is not ready yet, so instead use the string listed in settings as a model reference
+    user_model_reference = settings.AUTH_USER_MODEL
 
 if getattr(settings, 'INVITATION_USE_ALLAUTH', False):
     import re
@@ -100,9 +107,9 @@ class InvitationKey(models.Model):
     key = models.CharField(_('invitation key'), max_length=40)
     date_invited = models.DateTimeField(_('date invited'), 
                                         auto_now_add=True)
-    from_user = models.ForeignKey(settings.AUTH_USER_MODEL, 
+    from_user = models.ForeignKey(user_model_reference, 
                                   related_name='invitations_sent')
-    registrant = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, 
+    registrant = models.ManyToManyField(user_model_reference, null=True, blank=True, 
                                   related_name='invitations_used')
     uses_left = models.IntegerField(default=1)
     
@@ -223,7 +230,7 @@ class InvitationKey(models.Model):
         return token_html
         
 class InvitationUser(models.Model):
-    inviter = models.ForeignKey(settings.AUTH_USER_MODEL, unique=True)
+    inviter = models.ForeignKey(user_model_reference, unique=True)
     invitations_remaining = models.IntegerField()
 
     def __unicode__(self):
