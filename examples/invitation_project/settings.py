@@ -31,11 +31,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.admin',
     'django.contrib.sites',
-    'south',
-    'invitation',
     'registration',
+    'invitation',
 )
 
+SECRET_KEY = 'foooooo'
 INVITE_MODE = True
 ACCOUNT_INVITATION_DAYS = 30
 ACCOUNT_ACTIVATION_DAYS = 20

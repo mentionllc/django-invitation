@@ -2,7 +2,7 @@
 import sys, os
 sys.path.insert(0, os.path.split(os.path.split(os.getcwd())[0])[0])
 
-from django.core.management import execute_manager
+from django.core.management import execute_from_command_line
 
 try:
     import settings # Assumed to be in the same directory.
@@ -12,4 +12,5 @@ except ImportError:
     sys.exit(1)
 
 if __name__ == "__main__":
-    execute_manager(settings)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "examples.invitation_project.settings")
+    execute_from_command_line(sys.argv)
